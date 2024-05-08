@@ -95,6 +95,31 @@
             })
         })
 
-        });
+    });
+
+    // Tombol konfirmasi
+    $(document).on('click', '.btn-konfirmasi', function() {
+        const id = $(this).data('id');
+        const token = localStorage.getItem('token');
+
+        const confirm_dialog = confirm('Apakah Anda yakin ingin mengkonfirmasi pesanan ini?');
+        if (confirm_dialog) {
+            $.ajax({
+                url: '/api/pesanan/konfirmasi/' + id,
+                type: "POST",
+                headers: {
+                    "Authorization": 'Bearer ' + token
+                },
+                success: function(data) {
+                    if (data.message == 'success') {
+                        alert('Pesanan berhasil dikonfirmasi');
+                        location.reload(); // Reload halaman jika sukses
+                    } else {
+                        alert('Gagal mengkonfirmasi pesanan');
+                    }
+                }
+            });
+        }
+    });
     </script>
 @endpush

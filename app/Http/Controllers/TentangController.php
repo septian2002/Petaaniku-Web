@@ -11,25 +11,25 @@ class TentangController extends Controller
 {
     public function index()
     {
-        $about = About::first();
-        return view("tentang.index", compact("about"));
+        // $about = About::first();
+        return view("tentang.index");
     }
 
-    public function update(Request $request, About $about)
-    {
-        $input = $request->all();
-        if ($request->has('logo')) {
-            File::delete('uploads/' . $about->logo);
+    // public function update(Request $request, About $about)
+    // {
+    //     $input = $request->all();
+    //     if ($request->has('logo')) {
+    //         File::delete('uploads/' . $about->logo);
 
-            $logo = $request->file('logo');
-            $nama_logo = time() . rand(1,9) . '.' . $logo->getClientOriginalExtension();
-            $logo->move('uploads' , $nama_logo);
-            $input['logo'] = $nama_logo;
-        }else {
-            unset($input['logo']);
-        }
-        $about->update($input);
+    //         $logo = $request->file('logo');
+    //         $nama_logo = time() . rand(1,9) . '.' . $logo->getClientOriginalExtension();
+    //         $logo->move('uploads' , $nama_logo);
+    //         $input['logo'] = $nama_logo;
+    //     }else {
+    //         unset($input['logo']);
+    //     }
+    //     $about->update($input);
 
-        return redirect('/tentang');
-    }
+    //     return redirect('/tentang');
+    // }
 }

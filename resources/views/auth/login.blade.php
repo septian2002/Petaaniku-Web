@@ -79,6 +79,7 @@
                                             Login
                                         </button>
                                     </form>
+                                    <span>Anda adalah bukan admin? <a href="/login_member" class="text-blue-400 hover:text-blue-600">Klik Disini.</a></span>
                                     <hr>
                                 </div>
                             </div>

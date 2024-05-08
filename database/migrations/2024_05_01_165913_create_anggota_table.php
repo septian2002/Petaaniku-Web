@@ -11,9 +11,10 @@ class CreateAnggotaTable extends Migration
         Schema::create('anggota', function (Blueprint $table) {
             $table->id();
             $table->string('nama_anggota');
+            $table->string('alamat');
             $table->string('username');
             $table->string('email');
-            $table->string('alamat');
+            // $table->string('password');
             $table->timestamps();
         });
     }
