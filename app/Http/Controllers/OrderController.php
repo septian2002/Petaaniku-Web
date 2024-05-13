@@ -38,10 +38,10 @@ class OrderController extends Controller
         return view('pesanan.dikonfirmasi');
     }
 
-    public function dikemas_list()
-    {
-        return view('pesanan.dikemas');
-    }
+    // public function dikemas_list()
+    // {
+    //     return view('pesanan.dikemas');
+    // }
 
     public function dikirim_list()
     {

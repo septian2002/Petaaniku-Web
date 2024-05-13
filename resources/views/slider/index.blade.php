@@ -43,7 +43,7 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-12">
-                            <form class="form-slider">
+                            <form class="form-slider" id="formDropzone" class="dropzone" enctype="multipart/form-data">
                                 <div class="form-group">
                                     <label for="">Nama slider</label>
                                     <input type="text" class="form-control" name="nama_slider"
@@ -51,16 +51,21 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="">Deskripsi</label>
-                                    <textarea name="deskripsi" placeholder="Deskripsi" class="form-control" id="" cols="30" rows="10"
+                                    <textarea name="deskripsi" placeholder="Deskripsi" class="form-control" id="" cols="30" rows="2"
                                         required></textarea>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group mb-4">
                                     <label for="">Gambar</label>
-                                    <input type="file" class="form-control" name="gambar">
+                                    <div class="dropzone-drag-area">
+                                        <div id="previews" class="dropzone-previews"></div>
+                                        <div class="dz-message text-muted opacity-50" data-dz-message>
+                                            <span>Drag file here to upload</span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-primary btn-block">Submit</button>
-                                </div>
+                             
+                                    <button type="submit" class="btn btn-primary btn-block form-control" id="search-btn">Submit</button>
+                              
                             </form>
                         </div>
                     </div>
@@ -73,6 +78,29 @@
     </div>
 @endsection
 @push('js')
+<script>
+    // Initialize Dropzone
+    Dropzone.autoDiscover = false;
+    var myDropzone = new Dropzone("#formDropzone", {
+        url: '/api/sliders',
+        paramName: "file", // The name that will be used to transfer the file
+        maxFilesize: 5, // MB
+        maxFiles: 1, // Maximum number of files
+        acceptedFiles: 'image/*', // Specify accepted file types
+        addRemoveLinks: true, // Add remove links for uploaded files
+        dictDefaultMessage: "Drag file here to upload", // Default message
+        previewsContainer: "#previews", // Specify where previews should be displayed
+        previewTemplate: '<div class="dz-preview dz-file-preview"><img data-dz-thumbnail /></div>',
+        // Other options and callbacks as needed
+        init: function() {
+            this.on("success", function(file) {
+                // Hide the message after successful upload
+                $(".dropzone-drag-area .dz-message").hide();
+            });
+        }
+    });
+</script>
+
     <script>
         $(function() {
 
@@ -124,34 +152,51 @@
             });
 
             $('.modal-tambah').click(function() {
-                $('#modal-form').modal('show');
-                $('input[name="nama_slider"]').val('');
-                $('textarea[name="deskripsi"]').val('');
+            $('#modal-form').modal('show');
+            $('input[name="nama_slider"]').val('');
+            $('textarea[name="deskripsi"]').val('');
 
-                $('.form-slider').submit(function(e) {
-                    e.preventDefault();
-                    const token = localStorage.getItem('token');
-                    const frmdata = new FormData(this);
+            // Handle form submission
+            $('.form-slider').submit(function(e) {
+                e.preventDefault();
 
-                    $.ajax({
-                        url: 'api/sliders',
-                        type: 'POST',
-                        data: frmdata,
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        headers: {
-                            "Authorization": 'Bearer' + token
-                        },
-                        success: function(data) {
-                            if (data.success) {
-                                alert('Data berhasil ditambah');
-                                location.reload();
-                            }
+                // Get token from local storage
+                const token = localStorage.getItem('token');
+
+                // Create a new FormData object
+                const formData = new FormData();
+
+                // Add file from Dropzone to formData
+                const uploadedFiles = myDropzone.getAcceptedFiles();
+                if (uploadedFiles.length > 0) {
+                    formData.append('gambar', uploadedFiles[0]);
+                }
+
+                // Add other form data to formData
+                formData.append('nama_slider', $('input[name="nama_slider"]').val());
+                formData.append('deskripsi', $('textarea[name="deskripsi"]').val());
+
+                // Send form data with file to the server using AJAX
+                $.ajax({
+                    url: 'api/sliders',
+                    type: 'POST',
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    headers: {
+                        "Authorization": 'Bearer' + token
+                    },
+                    success: function(data) {
+                        if (data.success) {
+                            alert('Data berhasil ditambah');
+                            location.reload();
                         }
-                    });
+                    }
                 });
             });
+        });
+
 
             $(document).on('click', '.modal-ubah', function() {
                 $('#modal-form').modal('show');
@@ -161,6 +206,7 @@
                     $('input[name="nama_slider"]').val(data.nama_slider);
                     $('textarea[name="deskripsi"]').val(data.deskripsi);
                 });
+
 
                 $('.form-slider').submit(function(e) {
                     e.preventDefault();

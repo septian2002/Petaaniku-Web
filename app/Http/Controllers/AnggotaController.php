@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Anggota;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
 
 class AnggotaController extends Controller
 {
@@ -33,28 +34,41 @@ class AnggotaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'nama_anggota' => 'required',
-            'username' => 'required',
-            'email' => 'required',
-            'alamat' => 'required',
-        ]);
+{
+    // Validasi input
+    $validator = Validator::make($request->all(), [
+        'nama_anggota' => 'required',
+        'alamat' => 'required',
+        'username' => 'required',
+        'email' => 'required|email|unique:anggota,email', // Menambahkan validasi unique untuk email
+        // 'password' => 'required|min:8'
+    ]);
 
-        if ($validator->fails()) {
-            return response()->json(
-                $validator->errors(),
-                422
-            );
-        }
-
-        $anggota = Anggota::create($request->all());
-
+    if ($validator->fails()) {
         return response()->json([
-            'success' => true,
-            'data' => $anggota
-        ]);
+            'success' => false,
+            'message' => 'Validation error',
+            'errors' => $validator->errors()
+        ], 422);
     }
+
+    // Simpan data anggota baru
+    $input = $request->all();
+    $anggota = Anggota::create([
+        'nama_anggota' => $input['nama_anggota'],
+        'alamat' => $input['alamat'],
+        'username' => $input['username'],
+        'email' => $input['email'],
+        // 'password' => Hash::make($input['password'])
+    ]);
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Anggota berhasil didaftarkan',
+        'data' => $anggota
+    ], 201);
+}
+
 
     /**
      * Display the specified resource.

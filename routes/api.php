@@ -46,7 +46,7 @@ Route::group([
     Route::get('pesanan/dikonfirmasi', [OrderController::class,'dikonfirmasi']);
     Route::get('pesanan/baru', [OrderController::class,'baru']);
     Route::post('pesanan/baru', [OrderController::class,'tambahPesanan']);
-    Route::get('pesanan/dikemas', [OrderController::class,'dikemas']);
+    // Route::get('pesanan/dikemas', [OrderController::class,'dikemas']);
     Route::get('pesanan/dikirim', [OrderController::class,'dikirim']);
     Route::get('pesanan/diterima', [OrderController::class,'diterima']);
     Route::get('pesanan/selesai', [OrderController::class,'selesai']);

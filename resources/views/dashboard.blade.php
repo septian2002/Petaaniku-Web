@@ -20,7 +20,7 @@
                             <div class="h6 mb-0 font-weight-bold text-gray-800"> Baru: {{ $totalPesananBaru }}</div>
                             <div class="h6 mb-0 font-weight-bold text-gray-800"> Dikonfirmasi:
                                 {{ $totalPesananDikonfirmasi }}</div>
-                            <div class="h6 mb-0 font-weight-bold text-gray-800"> Dikemas: {{ $totalPesananDikemas }}</div>
+                            <!-- <div class="h6 mb-0 font-weight-bold text-gray-800"> Dikemas: {{ $totalPesananDikemas }}</div> -->
                             <div class="h6 mb-0 font-weight-bold text-gray-800"> Dikirim: {{ $totalPesananDikirim }}</div>
                             <div class="h6 mb-0 font-weight-bold text-gray-800"> Diterima: {{ $totalPesananDiterima }}</div>
                             <div class="h6 mb-0 font-weight-bold text-gray-800"> Selesai: {{ $totalPesananSelesai }}</div>

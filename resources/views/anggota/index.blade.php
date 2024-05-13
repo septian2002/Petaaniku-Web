@@ -1,13 +1,13 @@
 @extends('layout.app')
 
-@section('title', 'Data Kategori')
+@section('title', 'Data Anggota')
 
 @section('content')
 
     <div class="card shadow">
         <div class="card-header">
             <h4 class="card-title">
-                Data Kategori
+                Data Anggota
             </h4>
         </div>
         <div class="card-body">
@@ -47,8 +47,13 @@
                             <form class="form-kategori">
                                 <div class="form-group">
                                     <label for="">Nama Anggota</label>
-                                    <textarea name="nama_anggota" placeholder="Nama Anggota" class="form-control" id="" cols="30"
-                                        rows="10" required></textarea>
+                                    <input type="text" class="form-control" name="nama_anggota" placeholder="Nama Anggota" id=""
+                                         required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Alamat</label>
+                                    <textarea name="alamat" placeholder="Alamat" class="form-control" id="" cols="30" rows="2"
+                                        required></textarea>
                                 </div>
                                 <div class="form-group">
                                     <label for="">Username</label>
@@ -57,13 +62,12 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="">Email</label>
-                                    <textarea name="email" placeholder="Email" class="form-control" id="" cols="30" rows="10" required></textarea>
+                                    <input type="email" class="form-control" name="email" placeholder="email@gmail.com" id="" required>
                                 </div>
-                                <div class="form-group">
-                                    <label for="">Alamat</label>
-                                    <textarea name="alamat" placeholder="Alamat" class="form-control" id="" cols="30" rows="10"
-                                        required></textarea>
-                                </div>
+                                <!-- <div class="form-group">
+                                    <label for="">Password</label>
+                                    <input type="password" class="form-control" name="password" placeholder="Password" required>
+                                </div> -->
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-primary btn-block">Submit</button>
                                 </div>
@@ -81,36 +85,36 @@
 @push('js')
     <script>
         $(function() {
-
+            
+            // Mendapatkan data dari database
             $.ajax({
                 url: '/api/anggotaies',
-                success: function({
-                    data
-                }) {
+                success: function({ data }) {
                     let row = '';
                     data.map(function(val, index) {
                         row += `
-                <tr>
-                    <td>${index + 1}</td>
-                    <td>${val.nama_anggota}</td>
-                    <td>${val.username}</td>
-                    <td>${val.email}</td>
-                    <td>${val.alamat}</td>
-                    <td>
-                        <a data-toggle="modal" href="#modal-form" data-id="${val.id}" class="btn btn-warning modal-ubah">Edit</a>
-                        <a href="#" data-id="${val.id}" class="btn btn-danger btn-hapus">Hapus</a>
-                    </td>
-                </tr>
-            `;
+                            <tr>
+                                <td>${index + 1}</td>
+                                <td>${val.nama_anggota}</td>
+                                <td>${val.alamat}</td>
+                                <td>${val.username}</td>
+                                <td>${val.email}</td>
+                                <td>
+                                    <a data-toggle="modal" href="#modal-form" data-id="${val.id}" class="btn btn-warning modal-ubah">Edit</a>
+                                    <a href="#" data-id="${val.id}" class="btn btn-danger btn-hapus">Hapus</a>
+                                </td>
+                            </tr>
+                        `;
                     });
                     $('tbody').append(row);
                 }
             });
-
+        
+            // Tombol hapus
             $(document).on('click', '.btn-hapus', function() {
                 const id = $(this).data('id');
                 const token = localStorage.getItem('token');
-
+        
                 const confirm_dialog = confirm('Apakah anda yakin?');
                 if (confirm_dialog) {
                     $.ajax({
@@ -128,19 +132,31 @@
                     });
                 }
             });
-
+        
+            // Tombol tambah
             $('.modal-tambah').click(function() {
                 $('#modal-form').modal('show');
-                $('textarea[name="nama_anggota"]').val('');
-                $('input[name="username"]').val('');
-                $('textarea[name="email"]').val('');
+                $('input[name="nama_anggota"]').val('');
                 $('textarea[name="alamat"]').val('');
-
+                $('input[name="username"]').val('');
+                $('input[name="email"]').val('');
+        
                 $('.form-kategori').submit(function(e) {
                     e.preventDefault();
                     const token = localStorage.getItem('token');
                     const frmdata = new FormData(this);
-
+        
+                    // Mendapatkan nilai email
+                    const email = $('input[name="email"]').val();
+        
+                    // Validasi email menggunakan regex
+                    const emailRegex = /^[a-zA-Z0-9._%+-]+@gmail.com$/;
+                    if (!emailRegex.test(email)) {
+                        alert('Email harus berakhiran dengan @gmail.com');
+                        return;
+                    }
+        
+                    // Kirim data ke server jika validasi berhasil
                     $.ajax({
                         url: 'api/anggotaies',
                         type: 'POST',
@@ -160,25 +176,24 @@
                     });
                 });
             });
-
+        
+            // Tombol edit
             $(document).on('click', '.modal-ubah', function() {
                 $('#modal-form').modal('show');
                 const id = $(this).data('id');
-
-                $.get(`/api/anggotaies/${id}`, function({
-                    data
-                }) {
+        
+                $.get(`/api/anggotaies/${id}`, function({ data }) {
                     $('textarea[name="nama_anggota"]').val(data.nama_anggota);
                     $('input[name="username"]').val(data.username);
                     $('textarea[name="email"]').val(data.email);
                     $('textarea[name="alamat"]').val(data.alamat);
                 });
-
+        
                 $('.form-kategori').submit(function(e) {
                     e.preventDefault();
                     const token = localStorage.getItem('token');
                     const frmdata = new FormData(this);
-
+        
                     $.ajax({
                         url: `api/anggotaies/${id}?_method=PUT`,
                         type: 'POST',
@@ -198,7 +213,8 @@
                     });
                 });
             });
-
+        
         });
+        
     </script>
 @endpush

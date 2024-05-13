@@ -8,6 +8,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.js"></script>
+    <script src="/sbadmin2/js/jquery.js"></script>
+    <script src="/sbadmin2/js/dropzone.js"></script>
+    <link rel="stylesheet" type="text/css" href="/sbadmin2/css/dropzone.css"></script>
     
 
 
@@ -61,11 +65,11 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Custom Components:</h6>
                         <a class="collapse-item" href="/anggota">Data Anggota</a>
+                        <a class="collapse-item" href="/barang">Data Barang</a>
                         <a class="collapse-item" href="/kategori">Data Kategori</a>
                         {{-- <a class="collapse-item" href="/subkategori">Data Subkategori</a> --}}
                         <a class="collapse-item" href="/slider">Data Slider</a>
-                        <a class="collapse-item" href="/barang">Data Barang</a>
-                        <a class="collapse-item" href="/testimoni">Data Testimoni</a>
+                        <!-- <a class="collapse-item" href="/testimoni">Data Testimoni</a> -->
                     </div>
                 </div>
             </li>
@@ -80,7 +84,7 @@
                         <h6 class="collapse-header">Custom Components:</h6>
                         <a class="collapse-item" href="/pesanan/baru">Pesanan Baru</a>
                         <a class="collapse-item" href="/pesanan/dikonfirmasi">Pesanan Dikonfirmasi</a>
-                        <a class="collapse-item" href="/pesanan/dikemas">Pesanan Dikemas</a>
+                        <!-- <a class="collapse-item" href="/pesanan/dikemas">Pesanan Dikemas</a> -->
                         <a class="collapse-item" href="/pesanan/dikirim">Pesanan Dikirim</a>
                         <a class="collapse-item" href="/pesanan/diterima">Pesanan Diterima</a>
                         <a class="collapse-item" href="/pesanan/selesai">Pesanan Selesai</a>
@@ -93,20 +97,15 @@
                     <i class="fas fa-fw fa-credit-card"></i>
                     <span>Pembayaran</span></a>
             </li> --}}
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a class="nav-link" href="/laporan">
                     <i class="fas fa-fw fa-book"></i>
                     <span>Laporan Pesanan</span></a>
-            </li>
+            </li> -->
             <li class="nav-item">
                 <a class="nav-link" href="/tentang">
                     <i class="fas fa-fw fa-globe"></i>
                     <span>Tentang</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/logout">
-                    <i class="fas fa-fw fa-sign-out-alt"></i>
-                    <span>Logout</span></a>
             </li>
 
         </ul>
@@ -142,15 +141,17 @@
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="/logout" data-toggle="modal" data-target="#logoutModal">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    about me
+                                <!-- <a class="dropdown-item" href="">
+                                    <i class=""></i>
+                                    Ubah Password
+                                </a> -->
+                                <a class="dropdown-item" href="/logout">
+                                    <i class="fas fa-fw fa-sign-out-alt"></i>
+                                    Logout
                                 </a>
                             </div>
                         </li>
-
                     </ul>
-
                 </nav>
                 <!-- End of Topbar -->
 
@@ -167,16 +168,6 @@
 
             </div>
             <!-- End of Main Content -->
-
-            <!-- Footer -->
-            <footer class="sticky-footer bg-white">
-                <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; R-Ecommerce 2023</span>
-                    </div>
-                </div>
-            </footer>
-            <!-- End of Footer -->
 
         </div>
         <!-- End of Content Wrapper -->

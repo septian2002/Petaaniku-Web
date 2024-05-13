@@ -62,7 +62,7 @@
                             class="w-full rounded-full bg-blue-400 hover:bg-blue-600 text-white py-2">LOGIN</button>
                     </div>
                 </form>
-                <span>Belum punya akun? <a href="/register_member" class="text-blue-400 hover:text-blue-600">Daftar Disini.</a></span>
+                <span>Anda adalah admin? <a href="/login" class="text-blue-400 hover:text-blue-600">Klik Disini.</a></span>
             </div>
         </div>
     </div>
