@@ -97,11 +97,11 @@
                     <i class="fas fa-fw fa-credit-card"></i>
                     <span>Pembayaran</span></a>
             </li> --}}
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a class="nav-link" href="/laporan">
                     <i class="fas fa-fw fa-book"></i>
                     <span>Laporan Pesanan</span></a>
-            </li>
+            </li> -->
             <li class="nav-item">
                 <a class="nav-link" href="/tentang">
                     <i class="fas fa-fw fa-globe"></i>
@@ -141,15 +141,17 @@
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
+                                <!-- <a class="dropdown-item" href="">
+                                    <i class=""></i>
+                                    Ubah Password
+                                </a> -->
                                 <a class="dropdown-item" href="/logout">
                                     <i class="fas fa-fw fa-sign-out-alt"></i>
                                     Logout
                                 </a>
                             </div>
                         </li>
-
                     </ul>
-
                 </nav>
                 <!-- End of Topbar -->
 
