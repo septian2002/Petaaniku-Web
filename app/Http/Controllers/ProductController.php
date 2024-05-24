@@ -18,7 +18,7 @@ class ProductController extends Controller
     }
     public function list()
     {
-        $categories = Category::all();
+        $kategori = Category::all();
         return view('product.index', compact('categories'));
     }
     /**

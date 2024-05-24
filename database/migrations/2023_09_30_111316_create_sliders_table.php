@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('sliders', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id_slider');
             $table->string('nama_slider');
             $table->text('deskripsi');
             $table->string('gambar');

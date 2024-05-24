@@ -2,7 +2,9 @@
 
 namespace App\Http\Middleware;
 
+use Closure;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
+use Illuminate\Support\Facades\Auth;
 
 class Authenticate extends Middleware
 {
@@ -14,8 +16,20 @@ class Authenticate extends Middleware
      */
     protected function redirectTo($request)
     {
-        if (! $request->expectsJson()) {
+        if (!$request->expectsJson()) {
             return route('login');
         }
     }
+
+    // public function handle($request, Closure $next, ...$guards)
+    // {
+    //     $this->authenticate($request, $guards);
+
+    //     // Check user level after authentication
+    //     if (Auth::check() && Auth::user()->level === 'admin') {
+    //         return redirect('/dashboard'); // Redirect admin to dashboard
+    //     }
+
+    //     return $next($request);
+    // }
 }

@@ -29,7 +29,7 @@
                 @foreach ($categories as $category)
                 <div class="col-xs-4 col-xxs-12 mb-30 promo-banner">
                     <a href="/">
-                        <img src="/uploads/{{$category->gambar}}" alt="">
+                        <!-- <img src="/uploads/{{$category->gambar}}" alt=""> -->
                         <div class="overlay"></div>
                         <div class="promo-inner valign">
                             <h2>{{$category->nama_kategori}}</h2>
@@ -109,14 +109,14 @@
             </div>
 
             <div id="owl-testimonials" class="owl-carousel owl-theme text-center">
-                @foreach ($testimonies as $testimony)
+                
                 <div class="item">
                     <div class="testimonial">
-                        <p class="testimonial-text">{{$testimony->deskripsi}}</p>
-                        <span>{{$testimony->nama_testimoni}}</span>
+                        <p class="testimonial-text"></p>
+                        <span></span>
                     </div>
                 </div>
-                @endforeach
+                
             </div>
         </div>
 

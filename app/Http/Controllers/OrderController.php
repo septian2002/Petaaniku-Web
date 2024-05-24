@@ -58,6 +58,11 @@ class OrderController extends Controller
         return view('pesanan.selesai');
     }
 
+    // public function detail(Order $order)
+    // {
+    //     return view('pesanan.detail', compact('order'));
+    // }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -190,13 +195,13 @@ class OrderController extends Controller
             'data' => $orders
         ]);
     }
-    public function dikemas()
-    {
-        $orders = Order::with('member')->where('status', 'Dikemas')->get();
-        return response()->json([
-            'data' => $orders
-        ]);
-    }
+    // public function dikemas()
+    // {
+    //     $orders = Order::with('member')->where('status', 'Dikemas')->get();
+    //     return response()->json([
+    //         'data' => $orders
+    //     ]);
+    // }
     public function dikirim()
     {
         $orders = Order::with('member')->where('status', 'Dikirim')->get();

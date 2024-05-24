@@ -1,9 +1,13 @@
 @extends('layout.app')
+
 @section('title')
+
 Tentang
+
 @endsection
+
 @section('content')
-<h1>About Our Web Application</h1>
+<h1>Petaniku</h1>
     <p>Welcome to our web application. We aim to...</p>
     <h2>Our Features</h2>
     <ul>

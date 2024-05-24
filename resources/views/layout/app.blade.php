@@ -37,7 +37,7 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
@@ -63,7 +63,7 @@
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Custom Components:</h6>
+                        <h6 class="collapse-header">Data Master:</h6>
                         <a class="collapse-item" href="/anggota">Data Anggota</a>
                         <a class="collapse-item" href="/barang">Data Barang</a>
                         <a class="collapse-item" href="/kategori">Data Kategori</a>
@@ -81,7 +81,7 @@
                 </a>
                 <div id="pesanan" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Custom Components:</h6>
+                        <h6 class="collapse-header">Data Pemesanan:</h6>
                         <a class="collapse-item" href="/pesanan/baru">Pesanan Baru</a>
                         <a class="collapse-item" href="/pesanan/dikonfirmasi">Pesanan Dikonfirmasi</a>
                         <!-- <a class="collapse-item" href="/pesanan/dikemas">Pesanan Dikemas</a> -->
