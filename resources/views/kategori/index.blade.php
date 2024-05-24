@@ -20,8 +20,6 @@
                         <tr>
                             <th>No</th>
                             <th>Nama Kategori</th>
-                            <th>Deskripsi</th>
-                            <th>Gambar</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -50,15 +48,6 @@
                                         placeholder="Nama Kategori" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="">Deskripsi</label>
-                                    <textarea name="deskripsi" placeholder="Deskripsi" class="form-control" id="" cols="30" rows="10"
-                                        required></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label for="">Gambar</label>
-                                    <input type="file" class="form-control" name="gambar">
-                                </div>
-                                <div class="form-group">
                                     <button type="submit" class="btn btn-primary btn-block">Submit</button>
                                 </div>
                             </form>
@@ -72,6 +61,7 @@
         </div>
     </div>
 @endsection
+
 @push('js')
     <script>
         $(function() {
@@ -84,22 +74,20 @@
                     let row = '';
                     data.map(function(val, index) {
                         row += `
-            <tr>
-               <td>${index + 1}</td>
-               <td>${val.nama_kategori}</td>
-               <td>${val.deskripsi}</td>
-               <td><img src="/uploads/${val.gambar}" width="150"></td>
-               <td>
-                    <a data-toogle="modal" href="#modal-form" data-id="${val.id}" class="btn btn-warning modal-ubah">Edit</a>
-                    <a href="#" data-id="${val.id}" class="btn btn-danger btn-hapus">Hapus</a>
-                </td>
-            </tr>
-            `;
+                            <tr>
+                            <td>${index + 1}</td>
+                            <td>${val.nama_kategori}</td>
+                                    <a data-toogle="modal" href="#modal-form" data-id="${val.id}" class="btn btn-warning modal-ubah">Edit</a>
+                                    <a href="#" data-id="${val.id}" class="btn btn-danger btn-hapus">Hapus</a>
+                                </td>
+                            </tr>
+                        `;
                     });
                     $('tbody').append(row);
                 }
             });
 
+            // button hapus
             $(document).on('click', '.btn-hapus', function() {
                 const id = $(this).data('id')
                 const token = localStorage.getItem('token')
@@ -123,10 +111,10 @@
                 }
             });
 
+            //button tambah 
             $('.modal-tambah').click(function() {
                 $('#modal-form').modal('show');
                 $('input[name="nama_kategori"]').val('');
-                $('textarea[name="deskripsi"]').val('');
 
                 $('.form-kategori').submit(function(e) {
                     e.preventDefault();
@@ -153,13 +141,13 @@
                 });
             });
 
+            // button edit
             $(document).on('click', '.modal-ubah', function() {
                 $('#modal-form').modal('show');
                 const id = $(this).data('id');
 
                 $.get(`/api/categories/${id}`, function({data}) {
                     $('input[name="nama_kategori"]').val(data.nama_kategori);
-                    $('textarea[name="deskripsi"]').val(data.deskripsi);
                 });
 
                 $('.form-kategori').submit(function(e) {
@@ -186,8 +174,6 @@
                     });
                 });
             });
-
-
         });
     </script>
 @endpush

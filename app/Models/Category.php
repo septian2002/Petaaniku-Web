@@ -10,13 +10,10 @@ class Category extends Model
     use HasFactory;
     protected $guarded = [];
 
-    public function Subcategory()
-    {
-        return $this->hasMany(Subcategory::class);
-    }
+    protected $table = 'kategori';
 
     public function product()
     {
-        return $this->hasMany(Product::class);
+        return $this->hasMany(Produk::class);
     }
 }

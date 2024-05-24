@@ -22,7 +22,7 @@ Route::group([
     'prefix' => 'auth'
 ], function(){
     Route::post('admin',[AuthController::class,'login']);
-    Route::post('register',[AuthController::class,'register']);
+    // Route::post('register',[AuthController::class,'register']);
     Route::post('logout',[AuthController::class,'logout']);
     
 });
@@ -52,4 +52,5 @@ Route::group([
     Route::get('pesanan/selesai', [OrderController::class,'selesai']);
     Route::post('pesanan/ubah_status/{order}', [OrderController::class,'ubah_status']);
     Route::get('reports', [ReportController::class,'get_reports']);
+    Route::get('pesanan/detail/{order}', [OrderController::class, 'detail']);
 });

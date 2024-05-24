@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Cart;
+// use App\Models\Cart;
 use App\Models\About;
 use App\Models\Order;
 use App\Models\Slider;
-use App\Models\Payment;
+// use App\Models\Payment;
 use App\Models\Product;
 use App\Models\Category;
-use App\Models\Testimoni;
+// use App\Models\Testimoni;
+use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -23,9 +24,8 @@ class HomeController extends Controller
     {
         $sliders = Slider::all();
         $categories = Category::all();
-        $testimonies = Testimoni::all();
         $products = Product::skip(0)->take(8)->get();
-        return view('home.index', compact('sliders', 'categories', 'testimonies', 'products'));
+        return view('home.index', compact('sliders', 'categories', 'products'));
     }
 
     public function products($id_category)
@@ -37,29 +37,29 @@ class HomeController extends Controller
     public function searchProducts(Request $request)
     {
     $searchTerm = $request->input('search');
-    $products = Product::where('nama_barang', 'like', "%$searchTerm%")->get();
+    $produk = Product::where('nama_barang', 'like', "%$searchTerm%")->get();
 
-    return response()->json(['products' => $products]);
+    return response()->json(['produk' => $produk]);
 
     }
 
 
-    public function add_to_cart(Request $request)
-    {
-        $input = $request->all();
-        Cart::create($input);
-    }
+    // public function add_to_cart(Request $request)
+    // {
+    //     $input = $request->all();
+    //     Cart::create($input);
+    // }
 
-    public function delete_from_cart(Cart $cart)
-    {
-        $cart->delete();
-        return redirect('/cart');
-    }
+    // public function delete_from_cart(Cart $cart)
+    // {
+    //     $cart->delete();
+    //     return redirect('/cart');
+    // }
 
     public function product($id_product)
     {
-        $product = Product::find($id_product);
-        $latest_products = Product::orderByDesc('created_at')->offset(0)->limit(10)->get();
+        $produk = Product::find($id_product);
+        $latest_products = Produk::orderByDesc('created_at')->offset(0)->limit(10)->get();
         return view('home.product', compact('product', 'latest_products'));
     }
 
@@ -75,15 +75,16 @@ class HomeController extends Controller
     // {
     //     return view('home.search'); // Sesuaikan dengan nama file view Anda
     // }
-    public function cart()
-    {
-        if (!Auth::guard('webmember')->user()) {
-            return redirect('/login_member');
-        }
-        $carts = Cart::where('id_member', Auth::guard('webmember')->user()->id)->where('is_checkout', 0)->get();
-        $cart_total = Cart::where('id_member', Auth::guard('webmember')->user()->id)->where('is_checkout', 0)->sum('total');
-        return view('home.cart', compact('carts','cart_total'));
-    }
+    
+    // public function cart()
+    // {
+    //     if (!Auth::guard('webmember')->user()) {
+    //         return redirect('/login_member');
+    //     }
+    //     $carts = Cart::where('id_member', Auth::guard('webmember')->user()->id)->where('is_checkout', 0)->get();
+    //     $cart_total = Cart::where('id_member', Auth::guard('webmember')->user()->id)->where('is_checkout', 0)->sum('total');
+    //     return view('home.cart', compact('carts','cart_total'));
+    // }
 
     // public function get_kota($id)
     // {

@@ -160,7 +160,7 @@
                                         @if (Auth::guard('webmember')->check())
                                             <a href="/profile">{{ Auth::guard('webmember')->user()->nama_member }}</a>
                                         @else
-                                            <a href="/login_member">Login</a>
+                                            <a href="/login">Login</a>
                                         @endif
                                     </li>
                                     <li class="nav-search-wrap style-2 hidden-sm hidden-xs">
@@ -177,7 +177,7 @@
                                     </li>
                                     <li class="nav-register">
                                         @if (Auth::guard('webmember')->check())
-                                            <a href="/logout_member">Logout</a>
+                                            <a href="/logout">Logout</a>
                                         @endif
                                     </li>
                                 </ul>

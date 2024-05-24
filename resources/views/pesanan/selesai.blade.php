@@ -20,7 +20,6 @@
                             <th>Invoice</th>
                             <th>Member</th>
                             <th>Total</th>
-                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -30,6 +29,7 @@
     </div>
 
 @endsection
+
 @push('js')
     <script>
         $(function() {
@@ -49,30 +49,46 @@
                 return `${day}-${month}-${year}`;
             }
 
-            const token = localStorage.getItem('token')
+            const token = localStorage.getItem('token');
             $.ajax({
                 url: '/api/pesanan/selesai',
                 headers: {
                     "Authorization": 'Bearer' + token
                 },
-                success: function({
-                    data
-                }) {
+                success: function({ data }) {
                     let row = '';
                     data.map(function(val, index) {
                         row += `
-            <tr>
-               <td>${index + 1}</td>
-               <td>${date(val.created_at)}</td>
-               <td>${val.invoice}</td>
-               <td>${val.member.nama_member}</td>
-               <td>${rupiah(val.grand_total)}</td>
-            </tr>
-            `;
+                            <tr>
+                                <td>${index + 1}</td>
+                                <td>${date(val.created_at)}</td>
+                                <td>${val.invoice}</td>
+                                <td>${val.member.nama_member}</td>
+                                <td>${rupiah(val.grand_total)}</td>
+                            </tr>
+                        `;
                     });
                     $('tbody').append(row);
                 }
-        });
+            });
+
+            $(document).on('click', '.btn-aksi', function(){
+                const id = $(this).data('id');
+
+                $.ajax({
+                    url: '/api/pesanan/ubah_status/' + id,
+                    type: 'POST',
+                    data: {
+                        status: "Selesai"
+                    },
+                    headers: {
+                        "Authorization": 'Bearer' + token
+                    },
+                    success: function(data) {
+                        location.reload();
+                    }
+                });
+            });
 
         });
     </script>

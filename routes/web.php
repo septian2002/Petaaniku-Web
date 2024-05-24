@@ -41,7 +41,6 @@ Route::get('logout_member',[AuthController::class,'logout_member']);
 Route::get('register_member',[AuthController::class,'register_member']);
 Route::post('register_member',[AuthController::class,'register_member_action']);
 
-
 //kategori
 Route::get('/anggota',[AnggotaController::class, 'list']);
 Route::get('/kategori',[CategoryController::class, 'list']);

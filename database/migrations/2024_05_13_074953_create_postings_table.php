@@ -13,12 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('transaksi_total', function (Blueprint $table) {
-            $table->bigIncrements('id_tt');
+        Schema::create('posting', function (Blueprint $table) {
+            $table->bigIncrements('id_post');
             $table->unsignedBigInteger('id_user'); // Gunakan unsignedBigInteger karena itu adalah tipe yang sesuai dengan bigIncrements
             $table->foreign('id_user')->references('id_user')->on('users');
-            $table->integer('total_harga');
-            $table->enum('status', ['konfirmasi', 'dikirim', 'diterima']);
+            $table->string('tanaman');
+            $table->integer('luas_tanah');
+            $table->text('deskripsi_hasil_panen');
             $table->timestamps();
         });
     }
@@ -30,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('orders');
+        Schema::dropIfExists('postings');
     }
 };
