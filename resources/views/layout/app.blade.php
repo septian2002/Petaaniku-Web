@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.js"></script>
-    <script src="/sbadmin2/js/jquery.js"></script>
+    <script src="/js/jquery.js"></script>
     <script src="/sbadmin2/js/dropzone.js"></script>
     <link rel="stylesheet" type="text/css" href="/sbadmin2/css/dropzone.css"></script>
     

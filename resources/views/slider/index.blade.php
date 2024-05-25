@@ -116,7 +116,7 @@
                <td>${index + 1}</td>
                <td>${val.nama_slider}</td>
                <td>${val.deskripsi}</td>
-               <td><img src="/uploads/${val.gambar}" width="150"></td>
+               <td><img src="/uploads/sliders/${val.gambar}" width="150"></td>
                <td>
                     <a data-toogle="modal" href="#modal-form" data-id="${val.id}" class="btn btn-warning modal-ubah">Edit</a>
                     <a href="#" data-id="${val.id}" class="btn btn-danger btn-hapus">Hapus</a>
@@ -152,50 +152,50 @@
             });
 
             $('.modal-tambah').click(function() {
-            $('#modal-form').modal('show');
-            $('input[name="nama_slider"]').val('');
-            $('textarea[name="deskripsi"]').val('');
+                $('#modal-form').modal('show');
+                $('input[name="nama_slider"]').val('');
+                $('textarea[name="deskripsi"]').val('');
 
-            // Handle form submission
-            $('.form-slider').submit(function(e) {
-                e.preventDefault();
+                // Handle form submission
+                $('.form-slider').submit(function(e) {
+                    e.preventDefault();
 
-                // Get token from local storage
-                const token = localStorage.getItem('token');
+                    // Get token from local storage
+                    const token = localStorage.getItem('token');
 
-                // Create a new FormData object
-                const formData = new FormData();
+                    // Create a new FormData object
+                    const formData = new FormData();
 
-                // Add file from Dropzone to formData
-                const uploadedFiles = myDropzone.getAcceptedFiles();
-                if (uploadedFiles.length > 0) {
-                    formData.append('gambar', uploadedFiles[0]);
-                }
-
-                // Add other form data to formData
-                formData.append('nama_slider', $('input[name="nama_slider"]').val());
-                formData.append('deskripsi', $('textarea[name="deskripsi"]').val());
-
-                // Send form data with file to the server using AJAX
-                $.ajax({
-                    url: 'api/sliders',
-                    type: 'POST',
-                    data: formData,
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                    headers: {
-                        "Authorization": 'Bearer' + token
-                    },
-                    success: function(data) {
-                        if (data.success) {
-                            alert('Data berhasil ditambah');
-                            location.reload();
-                        }
+                    // Add file from Dropzone to formData
+                    const uploadedFiles = myDropzone.getAcceptedFiles();
+                    if (uploadedFiles.length > 0) {
+                        formData.append('gambar', uploadedFiles[0]);
                     }
+
+                    // Add other form data to formData
+                    formData.append('nama_slider', $('input[name="nama_slider"]').val());
+                    formData.append('deskripsi', $('textarea[name="deskripsi"]').val());
+
+                    // Send form data with file to the server using AJAX
+                    $.ajax({
+                        url: 'api/sliders',
+                        type: 'POST',
+                        data: formData,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        headers: {
+                            "Authorization": 'Bearer' + token
+                        },
+                        success: function(data) {
+                            if (data.success) {
+                                alert('Data berhasil ditambah');
+                                location.reload();
+                            }
+                        }
+                    });
                 });
             });
-        });
 
 
             $(document).on('click', '.modal-ubah', function() {

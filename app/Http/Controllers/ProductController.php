@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\Category;
-use App\Models\Subcategory;
+use App\Models\galeri;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
@@ -16,10 +16,11 @@ class ProductController extends Controller
         $this->middleware('auth')->only(['list']);
         $this->middleware('api')->only(['store','update','destroy']);
     }
+
     public function list()
     {
-        $kategori = Category::all();
-        return view('product.index', compact('categories'));
+        $categories = Category::all(); // inisialisasi variabel $categories dengan data kategori
+        return view('product.index', compact('categories')); // meneruskan variabel $categories ke view
     }
     /**
      * Display a listing of the resource.
@@ -28,11 +29,20 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products=Product::with('category')->get();
-        return response()->json([
-            'success' => true,
-            'data' => $products
-        ]);
+        // $products=Product::with('category')->get();
+        // return response()->json([
+        //     'success' => true,
+        //     'data' => $products
+        // ]);
+        try {
+            // Load products with their categories
+            $products = Product::with('category')->get();
+    
+            return response()->json(['success' => true, 'data' => $products], 200);
+        } catch (\Exception $e) {
+            \Log::error('Error fetching products: '.$e->getMessage());
+            return response()->json(['success' => false, 'message' => 'Terjadi kesalahan saat mengambil data produk'], 500);
+        }
     }
 
     /**
@@ -53,32 +63,40 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'nama_barang'=> 'required',
-            'id_kategori'=> 'required',
-            'harga'=> 'required',
-            'deskripsi' => 'required',
-            'gambar' => 'required|image|mimes:jpg,png,jpeg,webp'
-        ]);
-        if($validator->fails()) {
-            return response()->json(
-                $validator->errors(),
-                422
-            );
-        
+        try {
+            // Validasi request
+            $request->validate([
+                'nama_barang' => 'required|string|max:255',
+                'id_kategori' => 'required|exists:categories,id',
+                'harga' => 'required|numeric',
+                'deskripsi' => 'required|string',
+                'gambar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            ]);
+    
+            // Proses upload gambar
+            if ($request->hasFile('gambar')) {
+                $image = $request->file('gambar');
+                $name = time().'.'.$image->getClientOriginalExtension();
+                $destinationPath = public_path('/uploads/produk');
+                $image->move($destinationPath, $name);
+            }
+    
+            // Simpan data produk
+            $product = new Product();
+            $product->nama_barang = $request->nama_barang;
+            $product->id_kategori = $request->id_kategori;
+            $product->harga = $request->harga;
+            $product->deskripsi = $request->deskripsi;
+            $product->gambar = $name;
+            $product->save();
+    
+            return response()->json(['success' => true, 'message' => 'Produk berhasil ditambah'], 200);
+    
+        } catch (\Exception $e) {
+            // Log error
+            \Log::error('Error saat menyimpan produk: '.$e->getMessage());
+            return response()->json(['success' => false, 'message' => 'Terjadi kesalahan saat menyimpan produk'], 500);
         }
-        $input = $request->all();
-        if ($request->has('gambar')) {
-            $gambar = $request->file('gambar');
-            $nama_gambar = time() . rand(1,9) . '.' . $gambar->getClientOriginalExtension();
-            $gambar->move('uploads' , $nama_gambar);
-            $input['gambar'] = $nama_gambar;
-        }
-        $Product = Product::create($input);
-        return response() -> json([
-            'success' => true,
-            'data' => $Product
-        ]);
     }
 
     /**
@@ -113,7 +131,7 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $Product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $Product)
+    public function update(Request $request, $id_produk)
     {
         $validator = Validator::make($request->all(), [
             'id_kategori'=> 'required',
@@ -122,25 +140,43 @@ class ProductController extends Controller
             'deskripsi' => 'required',
             'gambar' => 'required|image|mimes:jpg,png,jpeg,webp'
         ]);
+
         if($validator->fails()) {
             return response()->json(
                 $validator->errors(),
                 422
             );
-        
         }
-        $input = $request->all();
-        if ($request->has('gambar')) {
-            File::delete('uploads/' . $Product->gambar);
 
+        $Product = Product::findOrFail($id_produk);
+        $input = $request->all();
+
+        // if ($request->has('gambar')) {
+        //     File::delete('uploads/produk/' . $Product->gambar);
+
+        //     $gambar = $request->file('gambar');
+        //     $nama_gambar = time() . rand(1,9) . '.' . $gambar->getClientOriginalExtension();
+        //     $gambar->move('uploads/produk' , $nama_gambar);
+        //     $input['gambar'] = $nama_gambar;
+        // }else {
+        //     unset($input['gambar']);
+        // }
+        if ($request->has('gambar')) {
+            // Hapus gambar lama dari galeri
+            Galeri::where('id_produk', $Product->id_produk)->delete();
+    
+            // Simpan gambar baru ke tabel galeri
             $gambar = $request->file('gambar');
             $nama_gambar = time() . rand(1,9) . '.' . $gambar->getClientOriginalExtension();
-            $gambar->move('uploads' , $nama_gambar);
-            $input['gambar'] = $nama_gambar;
-        }else {
-            unset($input['gambar']);
+            $gambar->move('uploads/produk' , $nama_gambar);
+            Galeri::create([
+                'id_produk' => $Product->id_produk,
+                'url_galeri' => $nama_gambar
+            ]);
         }
+
         $Product->update($input);
+
         return response() -> json([
             'success' => true,
             'message' => 'success',
@@ -154,10 +190,11 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $Product
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $Product)
+    public function destroy($id_produk)
     {
-        File::delete('uploads/ . $Product->gambar');
+        File::delete('uploads/produk/ . $Product->gambar');
         $Product->delete();
+
         return response() -> json([
             'success' => true,
             'message' => 'success'

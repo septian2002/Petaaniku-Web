@@ -26,9 +26,9 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $kategori=Category::all();
+        $categories=Category::all();
         return response()->json([
-            'data' => $kategori
+            'data' => $categories
         ]);
     }
 
@@ -53,18 +53,15 @@ class CategoryController extends Controller
         $validator = Validator::make($request->all(), [
             'nama_kategori' => 'required',
         ]);
-
-        if($validator->fails()) {
-            return response()->json(
-                $validator->errors(),
-                422
-            );
-        
+    
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
         }
-        
-        $category = Category::create($input);
-        return response() -> json([
-            'success' => 'true',
+    
+        $category = Category::create($request->all());
+    
+        return response()->json([
+            'success' => true,
             'data' => $category
         ]);
     }
@@ -100,23 +97,23 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    // public function update(Request $request, Category $category)
+    public function update(Request $request, $id_kategori)
     {
         $validator = Validator::make($request->all(), [
-            'nama_kategori' => 'required'
+            'nama_kategori' => 'required',
         ]);
-
-        if($validator->fails()) {
-            return response()->json(
-                $validator->errors(),
-                422
-            );
+    
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
         }
-
+    
+        $category = Category::findOrFail($id_kategori);
         $category->update($request->all());
-        return response() -> json([
+    
+        return response()->json([
             'success' => true,
-            'message' => 'success',
+            'message' => 'Data berhasil diubah',
             'data' => $category
         ]);
     }
@@ -127,19 +124,14 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy($id_kategori)
     {
-        // File::delete('uploads/ . $category->gambar');
-        // $category->delete();
-        // return response() -> json([
-        //     'success' => true,
-        //     'message' => 'success',
-        // ]);
-
+        $category = Category::findOrFail($id_kategori);
         $category->delete();
+
         return response()->json([
             'success' => true,
-            'message' => 'success',
+            'message' => 'Data berhasil dihapus',
         ]);
     }
 }

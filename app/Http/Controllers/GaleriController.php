@@ -3,11 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\galeri;
+use App\Models\Product;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class GaleriController extends Controller
 {
+    public function list()
+    {
+        $galeris = Galeri::all(); // inisialisasi variabel $categories dengan data kategori
+        return view('product.index', compact('categories')); // meneruskan variabel $categories ke view
+    }
+
     /**
      * Display a listing of the resource.
      *

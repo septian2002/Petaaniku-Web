@@ -90,24 +90,14 @@
 
     <script>
         $(function() {
-            function setCookie(name, value, days) {
-                var expires = "";
-                if (days) {
-                    var date = new Date();
-                    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-                    expires = "; expires=" + date.toUTCString();
-                }
-                document.cookie = name + "=" + (value || "") + expires + "; path=/";
-            }
-        
             $('.form-login').submit(function(e) {
                 e.preventDefault();
                 const email = $('.email').val();
                 const password = $('.password').val();
                 const csrf_token = $('meta[name="csrf-token"]').attr('content');
-        
+
                 $.ajax({
-                    url: '/login',
+                    url: '/login', // Pastikan URL ini mengarah ke endpoint yang benar di server
                     type: 'POST',
                     data: {
                         email: email,
@@ -119,8 +109,12 @@
                             alert(data.message);
                         } else {
                             localStorage.setItem('token', data.token);
-                            window.location.href = data.redirect_url;
+                            // Redirect to dashboard upon successful login
+                            window.location.href = '/dashboard'; // Pastikan URL ini mengarah ke halaman dashboard yang benar
                         }
+                    },
+                    error: function(xhr, status, error) {
+                        alert("An error occurred while processing your request.");
                     }
                 });
             });

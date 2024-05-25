@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 
-use App\Models\Anggota;
+// use App\Models\Anggota;
+use App\Models\User;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -18,7 +19,7 @@ class DashboardController extends Controller
     {
         // Menghitung jumlah data dari masing-masing model
         $totalOrders = Order::count();
-        $totalAnggota = Anggota::count();
+        $totalAnggota = User::count();
         $totalProducts = Product::count();
 
         // Menghitung jumlah pesanan untuk setiap status

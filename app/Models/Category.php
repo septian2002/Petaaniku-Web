@@ -11,9 +11,14 @@ class Category extends Model
     protected $guarded = [];
 
     protected $table = 'kategori';
+    protected $primaryKey = 'id_kategori';
+
+    protected $fillable = [
+        'nama_kategori'
+    ];
 
     public function product()
     {
-        return $this->hasMany(Produk::class);
+        return $this->hasMany(Product::class, 'id_kategori', 'id');
     }
 }

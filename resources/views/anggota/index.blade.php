@@ -88,7 +88,7 @@
             
             // Mendapatkan data dari database
             $.ajax({
-                url: '/api/anggotaies',
+                url: '/api/users',
                 success: function({ data }) {
                     let row = '';
                     data.map(function(val, index) {
@@ -118,7 +118,7 @@
                 const confirm_dialog = confirm('Apakah anda yakin?');
                 if (confirm_dialog) {
                     $.ajax({
-                        url: '/api/anggotaies/' + id,
+                        url: '/api/users/' + id,
                         type: "DELETE",
                         headers: {
                             "Authorization": 'Bearer ' + token
@@ -140,25 +140,26 @@
                 $('textarea[name="alamat"]').val('');
                 $('input[name="username"]').val('');
                 $('input[name="email"]').val('');
-        
+
+                // Mendapatkan elemen form dengan ID yang sesuai
                 $('.form-kategori').submit(function(e) {
                     e.preventDefault();
                     const token = localStorage.getItem('token');
                     const frmdata = new FormData(this);
-        
+
                     // Mendapatkan nilai email
                     const email = $('input[name="email"]').val();
-        
+
                     // Validasi email menggunakan regex
                     const emailRegex = /^[a-zA-Z0-9._%+-]+@gmail.com$/;
                     if (!emailRegex.test(email)) {
                         alert('Email harus berakhiran dengan @gmail.com');
                         return;
                     }
-        
+
                     // Kirim data ke server jika validasi berhasil
                     $.ajax({
-                        url: 'api/anggotaies',
+                        url: 'api/users', // Periksa URL ini untuk memastikan sesuai dengan endpoint yang benar
                         type: 'POST',
                         data: frmdata,
                         cache: false,
@@ -176,16 +177,17 @@
                     });
                 });
             });
+
         
             // Tombol edit
             $(document).on('click', '.modal-ubah', function() {
                 $('#modal-form').modal('show');
                 const id = $(this).data('id');
         
-                $.get(`/api/anggotaies/${id}`, function({ data }) {
-                    $('textarea[name="nama_anggota"]').val(data.nama_anggota);
+                $.get(`/api/users/${id}`, function({ data }) {
+                    $('input[name="nama_anggota"]').val(data.nama_anggota);
                     $('input[name="username"]').val(data.username);
-                    $('textarea[name="email"]').val(data.email);
+                    $('input[name="email"]').val(data.email);
                     $('textarea[name="alamat"]').val(data.alamat);
                 });
         
@@ -195,7 +197,7 @@
                     const frmdata = new FormData(this);
         
                     $.ajax({
-                        url: `api/anggotaies/${id}?_method=PUT`,
+                        url: `api/users/${id}?_method=PUT`,
                         type: 'POST',
                         data: frmdata,
                         cache: false,

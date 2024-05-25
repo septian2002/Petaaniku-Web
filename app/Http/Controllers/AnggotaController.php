@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Anggota;
+// use App\Models\Anggota;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -17,9 +17,9 @@ class AnggotaController extends Controller
      */
     public function index()
     {
-        $anggota = Anggota::all();
+        $users = User::all();
         return response()->json([
-            'data' => $anggota
+            'data' => $users
         ]);
     }
 
@@ -41,7 +41,7 @@ class AnggotaController extends Controller
         'nama_anggota' => 'required',
         'alamat' => 'required',
         'username' => 'required',
-        'email' => 'required|email|unique:anggota,email', // Menambahkan validasi unique untuk email
+        'email' => 'required|email|unique:users,email', // Menambahkan validasi unique untuk email
         // 'password' => 'required|min:8'
     ]);
 
@@ -55,7 +55,7 @@ class AnggotaController extends Controller
 
     // Simpan data anggota baru
     $input = $request->all();
-    $anggota = Anggota::create([
+    $user = User::create([
         'nama_anggota' => $input['nama_anggota'],
         'alamat' => $input['alamat'],
         'username' => $input['username'],
@@ -66,7 +66,7 @@ class AnggotaController extends Controller
     return response()->json([
         'success' => true,
         'message' => 'Anggota berhasil didaftarkan',
-        'data' => $anggota
+        'data' => $users
     ], 201);
 }
 
@@ -79,7 +79,7 @@ class AnggotaController extends Controller
      */
     public function show($id)
     {
-        $anggota = Anggota::findOrFail($id);
+        $users = User::findOrFail($id);
         return response()->json([
             'data' => $anggota
         ]);
@@ -108,8 +108,8 @@ class AnggotaController extends Controller
             );
         }
 
-        $anggota = Anggota::findOrFail($id);
-        $anggota->update($request->all());
+        $users = User::findOrFail($id);
+        $users->update($request->all());
 
         return response()->json([
             'success' => true,
@@ -125,8 +125,8 @@ class AnggotaController extends Controller
      */
     public function destroy($id)
     {
-        $anggota = Anggota::findOrFail($id);
-        $anggota->delete();
+        $users = User::findOrFail($id);
+        $users->delete();
 
         return response()->json([
             'success' => true,
